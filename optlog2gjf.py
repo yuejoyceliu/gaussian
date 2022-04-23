@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+"""
+ Usage 1: python optlog2gjf.py file-name-opt.log
+ Descriptions: Extract the optimized structure from the log file if it is optimized, otherwise generate restart input file.
+ Usage 2: python optlog2gjf.py
+ Descriptions: Extract the optimized structures or generate restart input files for all opt log files in the current directory.
+"""
 import sys,os,glob
 from restart_opt import restart_opt
 
@@ -14,10 +20,10 @@ def main():
     print('Default: %s' % ROUTE)
     out = []
     for f in files:
-        if optlog2gjfcom(f): out.append(f)
+        if optlog2gjf(f): out.append(f)
     if out: print('**\(^O^)/**found %d optimized structures' % len(out))
-    #for f in out:
-    #    print(' ',f.split('.')[0])
+    for f in out:
+        print(' ',f.split('.')[0])
 
 def check_command():
     if len(sys.argv) == 2:
@@ -30,7 +36,7 @@ def check_command():
     else:
         return glob.glob('*.log')
 
-def optlog2gjfcom(f):
+def optlog2gjf(f):
     with open(f, 'r') as fo:
         lines = fo.readlines()
 
