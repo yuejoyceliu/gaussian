@@ -23,7 +23,7 @@ def main():
         if optlog2gjf(f): out.append(f)
     if out: print('**\(^O^)/**found %d optimized structures' % len(out))
     for f in out:
-        print(' ',f.split('.')[0])
+        print(' ' + f.split('.')[0])
 
 def check_command():
     if len(sys.argv) == 2:
@@ -88,7 +88,7 @@ def get_optstruct(f, i):
 
     route = ROUTE
     temp = result[0].split(',')
-    if len(temp) == 2 and temp[0].isnumeric() and temp[1].isnumeric():
+    if len(temp) == 2 and temp[0].isdigit() and temp[1].isdigit():
         chgmul = ' '.join(temp) + '\n'
         if temp[1] != '1':
             route = route.split()
