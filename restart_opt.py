@@ -34,7 +34,7 @@ def restart_opt(f):
     for i in range(len(lines)-10, len(lines)):
         line = lines[i].strip()
         if line.startswith('Bend failed for angle'):
-            atoms = [x for x in line.split() if x.isnumeric() or x.startswith('-')]
+            atoms = [x for x in line.split() if x.isdigit() or x.startswith('-')]
             print('%s failed. Please modify the angle of atoms: %s\n' % (f, atoms))
             return
         elif line.startswith('Error termination'):
