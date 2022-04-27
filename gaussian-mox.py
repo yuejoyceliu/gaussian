@@ -29,11 +29,11 @@ def checkcommand():
                     chknode = 1
                     if node==1:
                         subprocess.call("sed -i '"+str(i+1)+"d' "+fl,shell=True)
-                        print("Reminder: for 1 node, %LINDAWORKER  is removed from", fl)
+                        print("Reminder: for 1 node, %LINDAWORKER  is removed from %s." % fl)
                     break
             if chknode==0 and node>1:
                     subprocess.call("sed -i '1i\%lindaworker' "+fl, shell=True)
-                    print("Reminder: for multi-nodes, %LINDAWORKER is added into", fl)
+                    print("Reminder: for multi-nodes, %LINDAWORKER is added into %s." % fl)
             return fl,pam,node,time
         except IOError:
             raise SystemExit('Error: %s Not Found!' % sys.argv[1])
