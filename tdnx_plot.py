@@ -26,10 +26,7 @@ def checkcommand():
         raise SystemExit('Usage: python tdnx_plot.py td_uvvis.csv nx_cross-section.dat num\n\tnum: lowest wavenumer contributing to newtonx,default=200')
     td = sys.argv[1]
     nx = sys.argv[2]
-    try:
-        n = float(sys.argv[3])
-    except:
-        n = 200
+    n = float(sys.argv[3]) if len(sys.argv)==4 else None
     if os.path.isfile(td):
         if os.path.isfile(nx):
              return td,nx,n
@@ -47,7 +44,7 @@ def nx_plot(fnx):
     plt.fill_between(x,dbottom, dceil,facecolor='cyan')
     plt.plot(x,df['sigma/A^2'],color='b')
 
-def td_plot(ftd,fnx,nxcut=200):
+def td_plot(ftd,fnx,nxcut=None):
     nm = ftd.split('.')[0]
     data = pd.read_csv(ftd,index_col=False)
 
@@ -57,8 +54,9 @@ def td_plot(ftd,fnx,nxcut=200):
     plt.plot(data['Wavelength(nm)'].values,data['Spectrum'].values,color='black')
     plt.vlines(data['MaxPeak(nm).1'].values,[0],data['intensity.1'].values,color='DarkRed')
     #coat excitation lines for newtonx with aqua color
-    nxdata = data[data['MaxPeak(nm).1']>nxcut]
-    plt.vlines(nxdata['MaxPeak(nm).1'].values,[0],nxdata['intensity.1'].values,color='aqua')
+    if nxcut is not None:
+        nxdata = data[data['MaxPeak(nm).1']>nxcut]
+        plt.vlines(nxdata['MaxPeak(nm).1'].values,[0],nxdata['intensity.1'].values,color='aqua')
     # plot format
     plt.xlim((Xmin,Xmax))
     nx_plot(fnx)
