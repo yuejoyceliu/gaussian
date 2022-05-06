@@ -57,7 +57,7 @@ def restart_opt(f):
                 increase += 1
         if line.startswith('SCF Done'):
             eng = float(line.split()[4])
-    if argmin >= iters-5 and increase < iters * 0.1:
+    if argmin >= iters-5 or increase < iters * 0.1:
         if rst_file(f): return 
         print('Warning: cannot restart from chk file.')
     else:
@@ -139,15 +139,16 @@ def rst_file(f):
             else:
                 break
         i += 1
+    route = ''
     while i < len(lines):
         if '#' in lines[i]: 
-            line = lines[i].lower()
-            if 'opt' not in line:
-                raise SystemExit(':::>_<:::restarted failed. Cannot locate opt in the route section!')
-            line = line.split()
-            for i, x in enumerate(line):
-                if 'opt' in x:
-                    keywords = []
+            while i < len(lines) and '------------' not in lines[i]:
+                route += lines[i][1:].strip()
+                i += 1
+            route = route.split()
+            for i, x in enumerate(route):
+                if 'opt' in x.lower():
+                    keywords = ['Restart']
                     if len(x) > 3:  
                         l = r = 3
                         while r < len(x):
@@ -155,10 +156,8 @@ def rst_file(f):
                                 keywords.append(x[l:r])
                                 l = r+1
                             r += 1
-                    keywords.append('Restart')
-                    line[i] = 'opt=(' + ','.join(keywords) + ')'
-                    opt = ' '.join(line)
-
+                    route[i] = 'opt=(' + ','.join(keywords) + ')'
+                    opt = ' '.join(route)
                     out = inp.split('.')[0] + '_rst.' + inp.split('.')[-1]
                     with open(out, 'w') as fo:
                         fo.write(LINK)
@@ -166,6 +165,6 @@ def rst_file(f):
                         fo.write(opt+'\n')
                     print('\'<_\' Please check and submit the input file based on chk: %s!\n' % out)
                     return True
+            raise SystemExit(':::>_<:::restarted failed. Cannot locate opt in the route section!')
         i += 1
-    
     return False
