@@ -4,7 +4,7 @@ import sys,os,math,subprocess
 
 Cores = 28
 GauEnv = 'contrib/g16.b01'
-PttAccMem = {'stf' : ['stf','stf','118G'], 'chem': ['chem','chem','245G'], 'ilahie' : ['ilahie','ilahie','118G'], 'ckpt' : ['ckpt','stf-ckpt','118G']}
+PttAccMem = {'stf' : ['stf','stf','118G'], 'chem': ['chem','chem','118G'], 'ilahie' : ['ilahie','ilahie','118G'], 'ckpt' : ['ckpt','stf-ckpt','118G']}
 
 def checkcommand():
     if len(sys.argv)!=5:
@@ -29,11 +29,11 @@ def checkcommand():
                     chknode = 1
                     if node==1:
                         subprocess.call("sed -i '"+str(i+1)+"d' "+fl,shell=True)
-                        print("Reminder: for 1 node, %LINDAWORKER  is removed from %s." % fl)
+                        print("Reminder: for 1 node, %LINDAWORKER is removed from {}.".format(fl))
                     break
             if chknode==0 and node>1:
-                    subprocess.call("sed -i '1i\%lindaworker' "+fl, shell=True)
-                    print("Reminder: for multi-nodes, %LINDAWORKER is added into %s." % fl)
+                subprocess.call("sed -i '1i\%lindaworker' "+fl, shell=True)
+                print("Reminder: for multi-nodes, %LINDAWORKER is added into {}.".format(fl))
             return fl,pam,node,time
         except IOError:
             raise SystemExit('Error: %s Not Found!' % sys.argv[1])
