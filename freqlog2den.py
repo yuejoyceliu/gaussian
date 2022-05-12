@@ -5,10 +5,10 @@ import os, sys
 def checkcommand():
     if len(sys.argv)!=6:
         message = "Usage: python freqlog2den.py gaussian-freq-log Egrain1 Imax1 Isize Emax2\n" \
-                + "  Egrain1: energy grain in units of cm-1\n" \
-                + "  Imax1: number of array elements in first segment of double array\n" \
-                + "  Isize: total size of double array (number of elements)\n" \
-                + "  Emax2: maximum energy (cm-1) for calculation"
+                + "  Egrain1: energy grain in units of cm-1. suggest=5\n" \
+                + "  Imax1: number of array elements in first segment of double array. suggest=1000\n" \
+                + "  Isize: total size of double array. suggest=3000\n" \
+                + "  Emax2: maximum energy (cm-1) for calculation. suggest=80000"
         raise SystemExit(message)
     else:
         return sys.argv[1:6]
@@ -38,7 +38,7 @@ def create_densum_input(params):
         for i, v in enumerate(freq):
             fo.write(",".join([str(i+1), "vib", v, "0", "1"]) + "\n")
         fo.write("\n")
-    print("**\(^o^)/**Found %d frequencies!Please run: /sw/contrib/multiwell-2022/bin/densum" % len(freq))
+    print("**\(^o^)/** Found %d frequencies! Next run: /sw/contrib/multiwell-2022/bin/densum" % len(freq))
 
 if __name__=="__main__":
     params = checkcommand()
